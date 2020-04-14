@@ -1,0 +1,18 @@
+class Solution {
+    public String convert(String s, int numRows) {
+        if(s.length() <= 1 || numRows <= 1) return s;
+        int newRows = Math.min(numRows, s.length());
+        List<StringBuilder> rows = new ArrayList<StringBuilder>();
+        for(int i = 0; i < newRows; i++) rows.add(new StringBuilder());
+        int cur = 0;
+        int dir = -1;
+        for(char c : s.toCharArray()){
+            rows.get(cur).append(c);
+            if(cur == 0 || cur == newRows - 1) dir = - dir;
+            cur += dir;
+        }
+        StringBuilder ret = new StringBuilder();
+        for(StringBuilder row : rows) ret.append(row);
+        return ret.toString();
+    }
+}
