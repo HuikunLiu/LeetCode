@@ -1,0 +1,41 @@
+class Solution {
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        List<List<Integer>> res = new ArrayList();
+        if (nums == null || nums.length < 4) return res;
+        Arrays.sort(nums);
+        int len = nums.length;
+        for (int i = 0; i < len - 3; i++){
+            //去重
+            if (i > 0 && nums[i] == nums[i-1]) continue;
+            int min1 = nums[i] + nums[i+1] + nums[i+2] + nums[i+3];
+            if (min1 > target) break;
+            int max1 = nums[i] + nums[len - 1] + nums[len - 2] + nums[len - 3];
+            if (max1 < target) continue;
+            for (int j = i + 1; j < len - 2; j++){
+                //去重
+                if (j > i + 1 && nums[j] == nums[j - 1]) continue;
+                int L = j + 1;
+                int R = len - 1;
+                //这个for循环里面nums[i]看作常数
+                int min = nums[i] + nums[j] + nums[L] + nums[L+1]; 
+                if (min > target) break;
+                int max = nums[i] + nums[j] + nums[R] + nums[R-1];
+                if (max < target) continue;
+                //正式表演
+                while (L < R){
+                    int sum = nums[i] + nums[j] + nums[L] + nums[R];
+                    if (sum == target){
+                        res.add(Arrays.asList(nums[i], nums[j], nums[L], nums[R]));
+                        while (L < R && nums[L] == nums [++L]);
+                        while (L < R && nums[R] == nums [--R]);
+                    }else if (sum < target){
+                        L++;
+                    }else{
+                        R--;
+                    }
+                }
+            }
+        }
+        return res;
+    }
+}
