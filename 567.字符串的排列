@@ -1,0 +1,50 @@
+class Solution {
+    public boolean checkInclusion(String s1, String s2) {
+        if(s2 == null || s1==null || s2.length() < s1.length())
+            return false;
+        HashMap<Character, Integer> need = new HashMap<>();
+        HashMap<Character, Integer> window = new HashMap<>();
+        //用need记录s1中需要的字符以及个数
+        for(int i = 0; i < s1.length(); i++){
+            char c = s1.charAt(i);
+            need.put(c, need.getOrDefault(c, 0) + 1);
+        }
+        int left = 0;
+        int right = 0;
+        int valid = 0;
+        //滑动窗口
+        while(right < s2.length()){
+            //右伸
+            char c = s2.charAt(right);
+            if(need.containsKey(c)){
+                window.put(c, window.getOrDefault(c, 0) + 1);
+                //注意！！！要用equals而不能直接用==
+                if(window.get(c).equals(need.get(c))){
+                    valid++;
+                }
+            }
+            right++;
+            
+
+            //左缩
+            while(right - left == s1.length()) {
+                if(valid == need.size()){
+                    return true;
+                }
+                char d = s2.charAt(left);
+                if(need.containsKey(d)){
+                    //注意！！！要用equals而不能直接用==
+                    if(need.get(d).equals(window.get(d))){
+                        valid--;
+                    }
+                    window.put(d, window.get(d) - 1);
+                }
+                left++;
+                
+            }
+
+        }
+        return false;
+
+    }
+}
